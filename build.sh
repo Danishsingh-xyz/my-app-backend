@@ -6,3 +6,6 @@ sudo pip3 install yt-dlp
 
 # Install ffmpeg
 sudo apt-get install -y ffmpeg
+
+# Install Node.js dependencies
+npm install
