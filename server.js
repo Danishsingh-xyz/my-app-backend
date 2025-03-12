@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from frontend
+  origin: '*', // Allow requests from any origin (update this in production)
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 }));
@@ -28,8 +28,8 @@ app.get('/', (req, res) => {
   });
 });
 
-// Path to ffmpeg folder
-const ffmpegPath = path.join(__dirname, 'ffmpeg'); // Point to the folder, not the file
+// Path to ffmpeg executable
+const ffmpegPath = path.join(__dirname, 'ffmpeg', 'ffmpeg'); // Update this path to point to the ffmpeg executable
 
 // Helper function to execute shell commands asynchronously
 const executeCommand = (command) => {
