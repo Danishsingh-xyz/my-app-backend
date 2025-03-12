@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+ HEAD
 const express = require('express');
 const { exec } = require('child_process');
 const cors = require('cors');
@@ -162,7 +162,6 @@ app.post('/download/thumbnail', async (req, res) => {
 // Start the server
 app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`);
-=======
 const express = require('express');
 const { exec } = require('child_process');
 const cors = require('cors');
@@ -326,5 +325,5 @@ app.post('/download/thumbnail', async (req, res) => {
 // Start the server
 app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`);
->>>>>>> 51b34bf (First commit after fixing large file issue)
+ 51b34bf (First commit after fixing large file issue)
 });
