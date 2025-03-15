@@ -78,7 +78,7 @@ app.post('/download/mp4', async (req, res) => {
 
   try {
     const outputPath = path.join(__dirname, 'temp_video.mp4');
-    const command = `yt-dlp --cookies cookies.txt -f best -o "${outputPath}" ${url}`;
+    const command = `yt-dlp --cookies cookies.txt -f b -o "${outputPath}" ${url}`; // Use "-f b" to suppress the warning
     console.log('Executing command:', command);
 
     await executeCommand(command);
