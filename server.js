@@ -14,8 +14,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Path to ffmpeg folder
-const ffmpegPath = path.join(__dirname, 'ffmpeg'); // Point to the folder, not the file
+// Path to ffmpeg binary
+const ffmpegPath = '/usr/bin/ffmpeg'; // Default path for ffmpeg on Linux
 
 // Helper function to execute shell commands asynchronously
 const executeCommand = (command) => {
