@@ -1,11 +1,10 @@
 const express = require('express');
 const { exec } = require('child_process');
 const cors = require('cors');
-const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
@@ -15,21 +14,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Root route
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Welcome to the YouTube Downloader API',
-    endpoints: {
-      videoInfo: 'POST /video-info',
-      downloadMP4: 'POST /download/mp4',
-      downloadMP3: 'POST /download/mp3',
-      downloadThumbnail: 'POST /download/thumbnail'
-    }
-  });
-});
-
-// Path to ffmpeg executable
-const ffmpegPath = path.join(__dirname, 'ffmpeg', 'ffmpeg'); // Update this path to point to the ffmpeg executable
+// Path to ffmpeg folder
+const ffmpegPath = path.join(__dirname, 'ffmpeg'); // Point to the folder, not the file
 
 // Helper function to execute shell commands asynchronously
 const executeCommand = (command) => {
@@ -44,6 +30,19 @@ const executeCommand = (command) => {
   });
 };
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to the YouTube Downloader API',
+    endpoints: {
+      videoInfo: 'POST /video-info',
+      downloadMP4: 'POST /download/mp4',
+      downloadMP3: 'POST /download/mp3',
+      downloadThumbnail: 'POST /download/thumbnail'
+    }
+  });
+});
+
 // YouTube Video/Shorts Info Endpoint
 app.post('/video-info', async (req, res) => {
   const { url } = req.body;
@@ -54,7 +53,7 @@ app.post('/video-info', async (req, res) => {
   }
 
   try {
-    const command = `yt-dlp --dump-json ${url}`;
+    const command = `yt-dlp --cookies cookies.txt --dump-json ${url}`;
     console.log('Executing command:', command);
 
     const stdout = await executeCommand(command);
@@ -79,7 +78,7 @@ app.post('/download/mp4', async (req, res) => {
 
   try {
     const outputPath = path.join(__dirname, 'temp_video.mp4');
-    const command = `yt-dlp -f best -o "${outputPath}" ${url}`; // Always download the best quality
+    const command = `yt-dlp --cookies cookies.txt -f best -o "${outputPath}" ${url}`;
     console.log('Executing command:', command);
 
     await executeCommand(command);
@@ -120,7 +119,7 @@ app.post('/download/mp3', async (req, res) => {
 
   try {
     const outputPath = path.join(__dirname, 'temp_audio.mp3');
-    const command = `yt-dlp -x --audio-format mp3 --ffmpeg-location "${ffmpegPath}" -o "${outputPath}" ${url}`;
+    const command = `yt-dlp --cookies cookies.txt -x --audio-format mp3 --ffmpeg-location "${ffmpegPath}" -o "${outputPath}" ${url}`;
     console.log('Executing command:', command);
 
     await executeCommand(command);
